@@ -74,6 +74,7 @@ export function DashboardCardManager({ onBack }: DashboardCardManagerProps) {
   const [editingCard, setEditingCard] = useState<DashboardCard | null>(null)
 
   const [formData, setFormData] = useState({
+    card_key: '',
     card_name: '',
     card_type: 'number' as 'number' | 'chart' | 'list' | 'progress',
     card_icon: 'BarChart3',
