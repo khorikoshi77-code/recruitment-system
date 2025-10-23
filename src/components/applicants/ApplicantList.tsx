@@ -85,7 +85,7 @@ export function ApplicantList() {
           updated_at: '2024-01-15T10:00:00Z',
           applied_at: '2024-01-15T10:00:00Z',
           interview_date: null,
-          evaluation: null
+          evaluation: ''
         },
         {
           id: '2',
@@ -98,7 +98,7 @@ export function ApplicantList() {
           updated_at: '2024-01-16T09:15:00Z',
           applied_at: '2024-01-14T14:30:00Z',
           interview_date: '2024-01-20T14:00:00Z',
-          evaluation: null
+          evaluation: ''
         },
         {
           id: '3',
@@ -111,7 +111,7 @@ export function ApplicantList() {
           updated_at: '2024-01-18T11:20:00Z',
           applied_at: '2024-01-13T16:45:00Z',
           interview_date: '2024-01-19T10:30:00Z',
-          evaluation: null
+          evaluation: ''
         },
         {
           id: '4',
