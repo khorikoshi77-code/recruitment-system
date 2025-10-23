@@ -68,58 +68,7 @@ export function PastApplicantList() {
       setApplicants(data || [])
     } catch (error) {
       console.error('過去の応募者取得エラー:', error)
-      // デモデータを表示
-      const demoData: PastApplicant[] = [
-        {
-          id: '7',
-          name: '木村 雄介',
-          email: 'kimura@example.com',
-          phone: '090-7890-1234',
-          position: 'インフラエンジニア',
-          status: '選考終了',
-          applied_at: '2024-01-09T08:30:00Z',
-          updated_at: '2024-01-15T17:20:00Z',
-          final_status: '選考終了',
-          notes: '技術力は高いが、コミュニケーション能力に課題あり'
-        },
-        {
-          id: '8',
-          name: '中村 恵',
-          email: 'nakamura@example.com',
-          phone: '090-8901-2345',
-          position: 'マーケティング',
-          status: '不採用',
-          applied_at: '2024-01-08T15:45:00Z',
-          updated_at: '2024-01-14T10:15:00Z',
-          final_status: '不採用',
-          notes: '経験不足のため不採用'
-        },
-        {
-          id: '9',
-          name: '小林 大輔',
-          email: 'kobayashi@example.com',
-          phone: '090-9012-3456',
-          position: 'セールス',
-          status: '辞退',
-          applied_at: '2024-01-07T12:20:00Z',
-          updated_at: '2024-01-13T14:30:00Z',
-          final_status: '辞退',
-          notes: '他社の条件が良かったため辞退'
-        },
-        {
-          id: '10',
-          name: '加藤 由美',
-          email: 'kato@example.com',
-          phone: '090-0123-4567',
-          position: '人事',
-          status: '選考終了',
-          applied_at: '2024-01-06T09:15:00Z',
-          updated_at: '2024-01-12T16:45:00Z',
-          final_status: '選考終了',
-          notes: '優秀だが、給与条件が合わず'
-        }
-      ]
-      setApplicants(demoData)
+      setError('過去の応募者データの取得に失敗しました')
     } finally {
       setLoading(false)
     }

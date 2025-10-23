@@ -45,75 +45,7 @@ export function InterviewCalendar() {
       setApplicants(data || [])
     } catch (error) {
       console.error('面接日程データの取得に失敗しました:', error)
-      // デモデータを表示
-      const demoData: Applicant[] = [
-        {
-          id: '2',
-          name: '佐藤 花子',
-          email: 'sato@example.com',
-          phone: '090-2345-6789',
-          position: 'バックエンドエンジニア',
-          status: '書類通過',
-          created_at: '2024-01-14T14:30:00Z',
-          updated_at: '2024-01-16T09:15:00Z',
-          applied_at: '2024-01-14T14:30:00Z',
-          interview_date: '2024-01-20T14:00:00Z',
-          evaluation: null
-        },
-        {
-          id: '3',
-          name: '鈴木 一郎',
-          email: 'suzuki@example.com',
-          phone: '090-3456-7890',
-          position: 'フルスタックエンジニア',
-          status: '面接中',
-          created_at: '2024-01-13T16:45:00Z',
-          updated_at: '2024-01-18T11:20:00Z',
-          applied_at: '2024-01-13T16:45:00Z',
-          interview_date: '2024-01-19T10:30:00Z',
-          evaluation: null
-        },
-        {
-          id: '4',
-          name: '高橋 美咲',
-          email: 'takahashi@example.com',
-          phone: '090-4567-8901',
-          position: 'UI/UXデザイナー',
-          status: '内定',
-          created_at: '2024-01-12T09:20:00Z',
-          updated_at: '2024-01-17T15:45:00Z',
-          applied_at: '2024-01-12T09:20:00Z',
-          interview_date: '2024-01-18T13:00:00Z',
-          evaluation: '技術力とデザインセンスが優秀。即戦力として期待できる。'
-        },
-        {
-          id: '5',
-          name: '山田 健太',
-          email: 'yamada@example.com',
-          phone: '090-5678-9012',
-          position: 'データサイエンティスト',
-          status: '辞退',
-          created_at: '2024-01-11T13:10:00Z',
-          updated_at: '2024-01-16T16:30:00Z',
-          applied_at: '2024-01-11T13:10:00Z',
-          interview_date: '2024-01-17T15:00:00Z',
-          evaluation: '他社の内定を選択'
-        },
-        {
-          id: '6',
-          name: '伊藤 さくら',
-          email: 'ito@example.com',
-          phone: '090-6789-0123',
-          position: 'プロダクトマネージャー',
-          status: '面接中',
-          created_at: '2024-01-10T11:00:00Z',
-          updated_at: '2024-01-19T14:30:00Z',
-          applied_at: '2024-01-10T11:00:00Z',
-          interview_date: '2024-01-21T16:00:00Z',
-          evaluation: null
-        }
-      ]
-      setApplicants(demoData)
+      setError('面接データの取得に失敗しました')
     } finally {
       setLoading(false)
     }
