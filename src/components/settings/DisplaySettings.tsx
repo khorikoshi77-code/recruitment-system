@@ -1,7 +1,8 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { supabase, DisplaySetting, ApplicantField } from '@/lib/supabase'
+import { supabase, DisplaySetting } from '@/lib/supabase'
+import { ApplicantField } from '@/types/applicant'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -97,8 +98,26 @@ export function DisplaySettings({ onBack }: DisplaySettingsProps) {
           }
         ])
         setApplicantFields([
-          { id: '1', field_key: 'name', field_name: '名前', field_type: 'text' },
-          { id: '2', field_key: 'email', field_name: 'メールアドレス', field_type: 'email' }
+          {
+            id: '1',
+            field_key: 'name',
+            field_name: '名前',
+            field_type: 'text',
+            is_required: true,
+            is_displayed: true,
+            display_order: 1,
+            options: [],
+          },
+          {
+            id: '2',
+            field_key: 'email',
+            field_name: 'メールアドレス',
+            field_type: 'email',
+            is_required: true,
+            is_displayed: true,
+            display_order: 2,
+            options: [],
+          },
         ])
         setError('データベースに接続できません。デモデータを表示しています。')
         return
