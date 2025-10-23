@@ -147,7 +147,6 @@ export function DisplaySettings({ onBack }: DisplaySettingsProps) {
           is_displayed: true,
           display_order: 1,
           options: [],
-          validation_rules: null,
           created_at: '',
           updated_at: ''
         }
