@@ -146,9 +146,7 @@ export function DisplaySettings({ onBack }: DisplaySettingsProps) {
           is_required: false,
           is_displayed: true,
           display_order: 1,
-          options: [],
-          created_at: '',
-          updated_at: ''
+          options: []
         }
       ])
       setError('データベースに接続できません。デモデータを表示しています。')
