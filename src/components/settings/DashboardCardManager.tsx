@@ -287,6 +287,7 @@ export function DashboardCardManager({ onBack }: DashboardCardManagerProps) {
     setEditingCard(null)
     setShowForm(false)
     setFormData({
+      card_key: '',
       card_name: '',
       card_type: 'number',
       card_icon: 'BarChart3',
