@@ -80,7 +80,6 @@ export function ApplicantDetail({ applicantId }: ApplicantDetailProps) {
           status: '応募',
           created_at: '2024-01-15T10:00:00Z',
           updated_at: '2024-01-15T10:00:00Z',
-          applied_at: '2024-01-15T10:00:00Z',
           interview_date: null,
           evaluation: ''
         },
@@ -93,7 +92,6 @@ export function ApplicantDetail({ applicantId }: ApplicantDetailProps) {
           status: '書類通過',
           created_at: '2024-01-14T14:30:00Z',
           updated_at: '2024-01-16T09:15:00Z',
-          applied_at: '2024-01-14T14:30:00Z',
           interview_date: '2024-01-20T14:00:00Z',
           evaluation: ''
         },
@@ -106,7 +104,6 @@ export function ApplicantDetail({ applicantId }: ApplicantDetailProps) {
           status: '面接中',
           created_at: '2024-01-13T16:45:00Z',
           updated_at: '2024-01-18T11:20:00Z',
-          applied_at: '2024-01-13T16:45:00Z',
           interview_date: '2024-01-19T10:30:00Z',
           evaluation: ''
         },
@@ -119,7 +116,6 @@ export function ApplicantDetail({ applicantId }: ApplicantDetailProps) {
           status: '内定',
           created_at: '2024-01-12T09:20:00Z',
           updated_at: '2024-01-17T15:45:00Z',
-          applied_at: '2024-01-12T09:20:00Z',
           interview_date: '2024-01-18T13:00:00Z',
           evaluation: '技術力とデザインセンスが優秀。即戦力として期待できる。'
         },
@@ -132,7 +128,6 @@ export function ApplicantDetail({ applicantId }: ApplicantDetailProps) {
           status: '辞退',
           created_at: '2024-01-11T13:10:00Z',
           updated_at: '2024-01-16T16:30:00Z',
-          applied_at: '2024-01-11T13:10:00Z',
           interview_date: '2024-01-17T15:00:00Z',
           evaluation: '他社の内定を選択'
         },
@@ -145,7 +140,6 @@ export function ApplicantDetail({ applicantId }: ApplicantDetailProps) {
           status: '面接中',
           created_at: '2024-01-10T11:00:00Z',
           updated_at: '2024-01-19T14:30:00Z',
-          applied_at: '2024-01-10T11:00:00Z',
           interview_date: '2024-01-21T16:00:00Z',
           evaluation: ''
         }
