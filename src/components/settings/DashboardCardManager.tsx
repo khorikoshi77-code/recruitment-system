@@ -221,7 +221,7 @@ export function DashboardCardManager({ onBack }: DashboardCardManagerProps) {
       setFormData({
         card_key: '',
         card_name: '',
-        card_type: 'number',
+        card_type: 'number' as 'number' | 'chart' | 'list' | 'progress',
         card_icon: 'BarChart3',
         card_color: 'blue',
         data_source: '応募者',
@@ -289,7 +289,7 @@ export function DashboardCardManager({ onBack }: DashboardCardManagerProps) {
     setFormData({
       card_key: '',
       card_name: '',
-      card_type: 'number',
+      card_type: 'number' as 'number' | 'chart' | 'list' | 'progress',
       card_icon: 'BarChart3',
       card_color: 'blue',
       data_source: '応募者',
