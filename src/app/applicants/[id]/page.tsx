@@ -2,15 +2,16 @@ import { Layout } from "@/components/layout/Layout";
 import { ApplicantDetail } from "@/components/applicants/ApplicantDetail";
 
 interface PageProps {
-  params: {
+  params: Promise<{
     id: string
-  }
+  }>
 }
 
-export default function ApplicantDetailPage({ params }: PageProps) {
+export default async function ApplicantDetailPage({ params }: PageProps) {
+  const { id } = await params;
   return (
     <Layout>
-      <ApplicantDetail applicantId={params.id} />
+      <ApplicantDetail applicantId={id} />
     </Layout>
   );
 }

@@ -3,16 +3,17 @@ import { UserEdit } from "@/components/users/UserEdit";
 import { RoleGuard } from "@/components/auth/RoleGuard";
 
 interface UserEditPageProps {
-  params: {
+  params: Promise<{
     id: string
-  }
+  }>
 }
 
-export default function UserEditPage({ params }: UserEditPageProps) {
+export default async function UserEditPage({ params }: UserEditPageProps) {
+  const { id } = await params;
   return (
     <Layout>
       <RoleGuard allowedRoles={['採用担当']}>
-        <UserEdit userId={params.id} />
+        <UserEdit userId={id} />
       </RoleGuard>
     </Layout>
   );

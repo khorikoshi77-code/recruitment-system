@@ -2,15 +2,16 @@ import { Layout } from "@/components/layout/Layout";
 import { InterviewEvaluation } from "@/components/interviews/InterviewEvaluation";
 
 interface PageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
-export default function InterviewEvaluatePage({ params }: PageProps) {
+export default async function InterviewEvaluatePage({ params }: PageProps) {
+  const { id } = await params;
   return (
     <Layout>
-      <InterviewEvaluation applicantId={params.id} />
+      <InterviewEvaluation applicantId={id} />
     </Layout>
   );
 }
