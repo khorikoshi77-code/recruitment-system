@@ -136,7 +136,7 @@ export function UserRegister() {
       }
 
       // ユーザー作成
-      await createUser(formData.email, formData.password, formData.role)
+      await createUser(formData.email, formData.password, formData.role as '採用担当' | '面接官')
 
       setSuccess('ユーザーの登録が完了しました')
       

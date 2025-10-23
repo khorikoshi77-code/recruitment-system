@@ -46,7 +46,7 @@ export async function getUserRole(userId: string): Promise<string | null> {
   }
   
   if (error) return null
-  return data.role
+  return data?.role || null
 }
 
 export async function createUser(email: string, password: string, role: '採用担当' | '面接官') {

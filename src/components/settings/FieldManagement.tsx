@@ -36,7 +36,7 @@ export function FieldManagement({ onBack }: FieldManagementProps) {
   // フォーム状態
   const [formData, setFormData] = useState({
     field_name: '',
-    field_type: 'text' as const,
+    field_type: 'text' as 'text' | 'email' | 'tel' | 'select' | 'textarea' | 'date',
     is_required: false,
     is_displayed: true,
     display_order: 0,
