@@ -253,7 +253,7 @@ export function InterviewEvaluation({ applicantId }: { applicantId: string }) {
           </button>
         ))}
            <span className="ml-2 text-sm text-gray-600">
-             {value}/5 ({Math.round((value / 5) * weight)})
+              {value}/5 ({Math.round((value / 5) * (weight || 1))})
            </span>
       </div>
     </div>
