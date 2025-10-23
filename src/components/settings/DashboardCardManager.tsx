@@ -238,6 +238,7 @@ export function DashboardCardManager({ onBack }: DashboardCardManagerProps) {
   const handleEdit = (card: DashboardCard) => {
     setEditingCard(card)
     setFormData({
+      card_key: card.card_key,
       card_name: card.card_name,
       card_type: card.card_type,
       card_icon: card.card_icon || 'BarChart3',
