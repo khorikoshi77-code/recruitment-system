@@ -46,7 +46,7 @@ export function ApplicantDetail({ applicantId }: ApplicantDetailProps) {
   const [success, setSuccess] = useState('')
 
   // フォーム状態
-  const [status, setStatus] = useState('')
+  const [status, setStatus] = useState<'応募' | '書類通過' | '面接中' | '内定' | '辞退'>('応募')
   const [interviewDate, setInterviewDate] = useState('')
 
   useEffect(() => {
