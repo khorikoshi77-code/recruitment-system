@@ -23,6 +23,7 @@ const columnOptions = [
 export function InterviewCalendar() {
   const [applicants, setApplicants] = useState<Applicant[]>([])
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
   const [visibleColumns, setVisibleColumns] = useState<Record<string, boolean>>(
     columnOptions.reduce((acc, col) => ({ ...acc, [col.key]: col.default }), {})
   )

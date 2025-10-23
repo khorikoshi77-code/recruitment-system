@@ -39,8 +39,8 @@ export function InterviewEvaluation({ applicantId }: { applicantId: string }) {
   const { fields: evaluationFields, loading: fieldsLoading } = useEvaluation()
   const [applicant, setApplicant] = useState<Applicant | null>(null)
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
   const [saving, setSaving] = useState(false)
-  const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
 
   const [evaluation, setEvaluation] = useState<Record<string, any>>({

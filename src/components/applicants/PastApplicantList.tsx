@@ -43,6 +43,7 @@ export function PastApplicantList() {
   const [applicants, setApplicants] = useState<PastApplicant[]>([])
   const [filteredApplicants, setFilteredApplicants] = useState<PastApplicant[]>([])
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
   const [searchTerm, setSearchTerm] = useState('')
   const [statusFilter, setStatusFilter] = useState('all')
   const [positionFilter, setPositionFilter] = useState('all')
