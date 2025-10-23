@@ -200,7 +200,7 @@ export function ApplicantDetail({ applicantId }: ApplicantDetailProps) {
           <CardContent className="space-y-4">
             <div>
               <Label htmlFor="status">ステータス</Label>
-              <Select value={status} onValueChange={setStatus}>
+              <Select value={status} onValueChange={(value) => setStatus(value as '応募' | '書類通過' | '面接中' | '内定' | '辞退')}>
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
