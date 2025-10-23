@@ -138,7 +138,19 @@ export function DisplaySettings({ onBack }: DisplaySettingsProps) {
         }
       ])
       setApplicantFields([
-        { id: '1', field_key: 'name', field_name: '名前', field_type: 'text' }
+        {
+          id: '1',
+          field_key: 'name',
+          field_name: '名前',
+          field_type: 'text',
+          is_required: false,
+          is_displayed: true,
+          display_order: 1,
+          options: null,
+          validation_rules: null,
+          created_at: '',
+          updated_at: ''
+        }
       ])
       setError('データベースに接続できません。デモデータを表示しています。')
     } finally {
