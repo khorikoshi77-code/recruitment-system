@@ -70,14 +70,7 @@ export function ApplicantDetail({ applicantId }: ApplicantDetailProps) {
     } catch (error: any) {
       console.error('応募者データの取得エラー:', error)
       // デモデータなし
-      const foundApplicant = null
-      if (foundApplicant) {
-        setApplicant(foundApplicant)
-        setStatus(foundApplicant.status)
-        setInterviewDate(foundApplicant.interview_date || '')
-      } else {
-        setError('応募者データが見つかりませんでした')
-      }
+      setError('応募者データが見つかりませんでした')
     } finally {
       setLoading(false)
     }
