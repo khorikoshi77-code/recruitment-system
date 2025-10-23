@@ -228,7 +228,7 @@ export function ApplicantRegister() {
                       >
                         <option value="">選択してください</option>
                         {field.options && Object.entries(field.options).map(([key, value]) => (
-                          <option key={key} value={key}>{value}</option>
+                          <option key={key} value={key}>{String(value)}</option>
                         ))}
                       </select>
                     ) : (
