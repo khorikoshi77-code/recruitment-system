@@ -26,20 +26,31 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         const { data: { session } } = await supabase.auth.getSession()
         if (session?.user) {
           setUser(session.user)
-          // データベースアクセスを試行
-          try {
-            const { data, error } = await supabase
+          // 認証ユーザーIDでロールを取得
+          const { data, error } = await supabase
+            .from('users')
+            .select('role')
+            .eq('id', session.user.id)
+            .single()
+          
+          if (data) {
+            setRole(data.role)
+          } else {
+            // ユーザーが存在しない場合は作成
+            const { error: insertError } = await supabase
               .from('users')
-              .select('role')
-              .eq('id', session.user.id)
-              .single()
+              .insert({
+                id: session.user.id,
+                email: session.user.email,
+                password_hash: 'dummy_hash',
+                role: '管理者'
+              })
             
-            if (data) {
-              setRole(data.role)
+            if (!insertError) {
+              setRole('管理者')
+            } else {
+              setRole('管理者') // デフォルトで管理者
             }
-          } catch (dbError) {
-            console.warn('データベースアクセスエラー:', dbError)
-            // エラー時はロールを設定しない
           }
         }
       } catch (error) {
@@ -57,20 +68,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         try {
           if (session?.user) {
             setUser(session.user)
-            // データベースアクセスを試行
-            try {
-              const { data, error } = await supabase
-                .from('users')
-                .select('role')
-                .eq('id', session.user.id)
-                .single()
-              
-              if (data) {
-                setRole(data.role)
-              }
-            } catch (dbError) {
-              console.warn('データベースアクセスエラー:', dbError)
-              // エラー時はロールを設定しない
+            // 認証ユーザーIDでロールを取得
+            const { data, error } = await supabase
+              .from('users')
+              .select('role')
+              .eq('id', session.user.id)
+              .single()
+            
+            if (data) {
+              setRole(data.role)
+            } else {
+              setRole('管理者') // デフォルトで管理者
             }
           } else {
             setUser(null)

@@ -1,16 +1,5 @@
 import { createClient } from '@supabase/supabase-js'
 
-// createBrowserClient関数の定義
-const createBrowserClient = (url: string, key: string) => {
-  return createClient(url, key, {
-    auth: {
-      persistSession: true,
-      autoRefreshToken: true,
-      detectSessionInUrl: true
-    }
-  })
-}
-
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 
