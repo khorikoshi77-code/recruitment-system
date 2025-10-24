@@ -22,8 +22,44 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     // 初期認証状態を取得
     const getInitialSession = async () => {
-      try {
-        const { data: { session } } = await supabase.auth.getSession()
+      const { data: { session } } = await supabase.auth.getSession()
+      if (session?.user) {
+        setUser(session.user)
+        // 認証ユーザーIDでロールを取得
+        const { data, error } = await supabase
+          .from('users')
+          .select('role')
+          .eq('id', session.user.id)
+          .single()
+        
+        if (data) {
+          setRole(data.role)
+        } else {
+          // ユーザーが存在しない場合は作成
+          const { error: insertError } = await supabase
+            .from('users')
+            .insert({
+              id: session.user.id,
+              email: session.user.email,
+              password_hash: 'dummy_hash',
+              role: '管理者'
+            })
+          
+          if (!insertError) {
+            setRole('管理者')
+          } else {
+            setRole('管理者') // デフォルトで管理者
+          }
+        }
+      }
+      setLoading(false)
+    }
+
+    getInitialSession()
+
+    // 認証状態の変更を監視
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      async (event, session) => {
         if (session?.user) {
           setUser(session.user)
           // 認証ユーザーIDでロールを取得
@@ -36,59 +72,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           if (data) {
             setRole(data.role)
           } else {
-            // ユーザーが存在しない場合は作成
-            const { error: insertError } = await supabase
-              .from('users')
-              .insert({
-                id: session.user.id,
-                email: session.user.email,
-                password_hash: 'dummy_hash',
-                role: '管理者'
-              })
-            
-            if (!insertError) {
-              setRole('管理者')
-            } else {
-              setRole('管理者') // デフォルトで管理者
-            }
+            setRole('管理者') // デフォルトで管理者
           }
+        } else {
+          setUser(null)
+          setRole(null)
         }
-      } catch (error) {
-        console.error('認証セッション取得エラー:', error)
-      } finally {
         setLoading(false)
-      }
-    }
-
-    getInitialSession()
-
-    // 認証状態の変更を監視
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
-        try {
-          if (session?.user) {
-            setUser(session.user)
-            // 認証ユーザーIDでロールを取得
-            const { data, error } = await supabase
-              .from('users')
-              .select('role')
-              .eq('id', session.user.id)
-              .single()
-            
-            if (data) {
-              setRole(data.role)
-            } else {
-              setRole('管理者') // デフォルトで管理者
-            }
-          } else {
-            setUser(null)
-            setRole(null)
-          }
-        } catch (error) {
-          console.error('認証状態変更エラー:', error)
-        } finally {
-          setLoading(false)
-        }
       }
     )
 
