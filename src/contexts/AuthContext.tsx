@@ -26,7 +26,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         const { data: { session } } = await supabase.auth.getSession()
         if (session?.user) {
           setUser(session.user)
-          // データベースアクセスを試行、失敗時はデフォルトロールを設定
+          // データベースアクセスを試行
           try {
             const { data, error } = await supabase
               .from('users')
@@ -36,12 +36,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             
             if (data) {
               setRole(data.role)
-            } else {
-              setRole('管理者') // デフォルトで管理者
             }
           } catch (dbError) {
-            console.warn('データベースアクセスエラー、デフォルトロールを設定:', dbError)
-            setRole('管理者') // デフォルトで管理者
+            console.warn('データベースアクセスエラー:', dbError)
+            // エラー時はロールを設定しない
           }
         }
       } catch (error) {
@@ -59,7 +57,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         try {
           if (session?.user) {
             setUser(session.user)
-            // データベースアクセスを試行、失敗時はデフォルトロールを設定
+            // データベースアクセスを試行
             try {
               const { data, error } = await supabase
                 .from('users')
@@ -69,12 +67,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
               
               if (data) {
                 setRole(data.role)
-              } else {
-                setRole('管理者') // デフォルトで管理者
               }
             } catch (dbError) {
-              console.warn('データベースアクセスエラー、デフォルトロールを設定:', dbError)
-              setRole('管理者') // デフォルトで管理者
+              console.warn('データベースアクセスエラー:', dbError)
+              // エラー時はロールを設定しない
             }
           } else {
             setUser(null)
