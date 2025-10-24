@@ -4,7 +4,7 @@ const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 
 // ✅ ログインセッションを自動で反映するブラウザ用クライアント
-export const supabase = createBrowserClient(supabaseUrl, supabaseAnonKey)
+export const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
 // SQL実行用のRPC関数（開発用）
 export const execSQL = async (sql: string) => {
