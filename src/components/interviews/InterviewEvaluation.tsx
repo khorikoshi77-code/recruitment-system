@@ -155,15 +155,16 @@ export function InterviewEvaluation({ applicantId }: { applicantId: string }) {
       const overallRating = calculateOverallRating()
       
       // 評価データを保存（evaluationsテーブルに保存）
+      // ✅ 採否未選択時は「要検討」を自動設定
       const { data: evaluationResult, error: evalError } = await supabase
         .from('evaluations')
         .upsert({
           applicant_id: applicantId,
-          overall_rating: overallRating,
+          overall_rating: overallRating ?? 3,
           strengths: evaluation.strengths,
           weaknesses: evaluation.weaknesses,
           comments: evaluation.comments,
-          recommendation: evaluation.recommendation,
+          recommendation: evaluation.recommendation || '要検討',
           evaluated_at: new Date().toISOString()
         })
         .select()
