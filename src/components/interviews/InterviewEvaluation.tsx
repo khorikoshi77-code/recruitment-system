@@ -160,7 +160,7 @@ export function InterviewEvaluation({ applicantId }: { applicantId: string }) {
         .from('evaluations')
         .upsert({
           applicant_id: applicantId,
-          overall_rating: Number((overallRating ?? 3).toFixed(2)),
+          overall_rating: overallRating ?? 3,
           strengths: evaluation.strengths,
           weaknesses: evaluation.weaknesses,
           comments: evaluation.comments,
