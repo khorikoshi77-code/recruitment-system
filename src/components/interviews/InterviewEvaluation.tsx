@@ -11,7 +11,9 @@ import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Star, Save, ArrowLeft, User, Calendar, Briefcase } from 'lucide-react'
+import { Star, Save, ArrowLeft, User, Calendar, Briefcase, Trash2 } from 'lucide-react'
+import { format } from 'date-fns'
+import { ja } from 'date-fns/locale'
 
 interface Applicant {
   id: string
@@ -50,9 +52,12 @@ export function InterviewEvaluation({ applicantId }: { applicantId: string }) {
     recommendation: ''
   })
   const [overallRating, setOverallRating] = useState(0)
+  const [existingEvaluationId, setExistingEvaluationId] = useState<string | null>(null)
+  const [evaluatedAt, setEvaluatedAt] = useState<string | null>(null)
 
   useEffect(() => {
     fetchApplicant()
+    fetchExistingEvaluation()
   }, [applicantId])
 
   const fetchApplicant = async () => {
@@ -70,6 +75,65 @@ export function InterviewEvaluation({ applicantId }: { applicantId: string }) {
       setError('応募者データの取得に失敗しました')
     } finally {
       setLoading(false)
+    }
+  }
+
+  const fetchExistingEvaluation = async () => {
+    try {
+      // 既存の評価を取得（複数ある場合は最新のものを取得）
+      const { data: evalDataArray, error: evalError } = await supabase
+        .from('evaluations')
+        .select('*')
+        .eq('applicant_id', applicantId)
+        .order('evaluated_at', { ascending: false })
+        .limit(1)
+
+      if (evalError) {
+        throw evalError
+      }
+
+      // データが存在しない場合（新規作成）
+      if (!evalDataArray || evalDataArray.length === 0) {
+        console.log('既存評価なし - 新規作成モード')
+        return
+      }
+
+      const evalData = evalDataArray[0]
+
+      if (evalData) {
+        // 既存評価が存在する場合
+        console.log('既存評価あり - 編集モード:', evalData)
+        setExistingEvaluationId(evalData.id)
+        setEvaluatedAt(evalData.evaluated_at)
+
+        // フォームに既存データをセット
+        setEvaluation({
+          strengths: evalData.strengths || '',
+          weaknesses: evalData.weaknesses || '',
+          comments: evalData.comments || '',
+          recommendation: evalData.recommendation || ''
+        })
+        setOverallRating(Number(evalData.overall_rating) || 0)
+
+        // 評価項目の詳細値を取得
+        const { data: fieldValues, error: fieldError } = await supabase
+          .from('evaluation_field_values')
+          .select('*')
+          .eq('evaluation_id', evalData.id)
+
+        if (fieldError) throw fieldError
+
+        if (fieldValues && fieldValues.length > 0) {
+          const fieldRatings: Record<string, number> = {}
+          fieldValues.forEach((fv: any) => {
+            fieldRatings[fv.field_id] = fv.rating
+          })
+          setEvaluation(prev => ({ ...prev, ...fieldRatings }))
+        }
+      }
+    } catch (error) {
+      console.error('既存評価の取得エラー:', error)
+      // エラーが発生しても新規作成モードで続行
     }
   }
 
@@ -158,6 +222,7 @@ export function InterviewEvaluation({ applicantId }: { applicantId: string }) {
 
       // 評価データを保存（evaluationsテーブルに保存）
       // ✅ 採否未選択時は「要検討」を自動設定
+      // ✅ onConflict: 'applicant_id' で既存評価を更新
       const { data: evaluationResult, error: evalError } = await supabase
         .from('evaluations')
         .upsert({
@@ -168,6 +233,8 @@ export function InterviewEvaluation({ applicantId }: { applicantId: string }) {
           comments: evaluation.comments,
           recommendation: evaluation.recommendation || '要検討',
           evaluated_at: new Date().toISOString()
+        }, {
+          onConflict: 'applicant_id'
         })
         .select()
 
@@ -194,7 +261,9 @@ export function InterviewEvaluation({ applicantId }: { applicantId: string }) {
         console.log('評価項目データ保存:', fieldValues)
         const { error: fieldError } = await supabase
           .from('evaluation_field_values')
-          .upsert(fieldValues)
+          .upsert(fieldValues, {
+            onConflict: 'evaluation_id,field_id'
+          })
           .select()
 
         if (fieldError) {
@@ -232,6 +301,43 @@ export function InterviewEvaluation({ applicantId }: { applicantId: string }) {
       setError(errorMessage)
     } finally {
       console.log('保存処理終了 - ローディング状態解除')
+      setSaving(false)
+    }
+  }
+
+  const handleDelete = async () => {
+    if (!existingEvaluationId) {
+      setError('削除する評価が見つかりません')
+      return
+    }
+
+    const confirmed = window.confirm('この評価を削除してもよろしいですか？\nこの操作は取り消せません。')
+    if (!confirmed) return
+
+    setSaving(true)
+    setError('')
+    setSuccess('')
+
+    try {
+      // evaluationsを削除（CASCADE設定で関連データも自動削除）
+      const { error: deleteError } = await supabase
+        .from('evaluations')
+        .delete()
+        .eq('id', existingEvaluationId)
+
+      if (deleteError) throw deleteError
+
+      setSuccess('評価を削除しました')
+
+      // 1秒後に面接一覧に戻る
+      setTimeout(() => {
+        router.push('/interviews')
+      }, 1000)
+
+    } catch (error: any) {
+      console.error('評価削除エラー:', error)
+      setError(error.message || '評価の削除に失敗しました')
+    } finally {
       setSaving(false)
     }
   }
@@ -497,6 +603,16 @@ export function InterviewEvaluation({ applicantId }: { applicantId: string }) {
               </div>
             </div>
 
+            {/* 評価日時表示（編集モード時） */}
+            {existingEvaluationId && evaluatedAt && (
+              <div className="border-t pt-4">
+                <div className="flex items-center space-x-2 text-sm text-gray-600">
+                  <Calendar className="h-4 w-4" />
+                  <span>評価日時: {format(new Date(evaluatedAt), 'yyyy年MM月dd日 HH:mm', { locale: ja })}</span>
+                </div>
+              </div>
+            )}
+
             {/* 送信ボタン */}
             <div className="flex space-x-4 pt-6">
               <Button
@@ -505,8 +621,20 @@ export function InterviewEvaluation({ applicantId }: { applicantId: string }) {
                 className="flex-1"
               >
                 <Save className="h-4 w-4 mr-2" />
-                {saving ? '保存中...' : '評価を保存'}
+                {saving ? '保存中...' : existingEvaluationId ? '評価を更新' : '評価を保存'}
               </Button>
+              {existingEvaluationId && (
+                <Button
+                  type="button"
+                  variant="destructive"
+                  onClick={handleDelete}
+                  disabled={saving}
+                  className="flex-1"
+                >
+                  <Trash2 className="h-4 w-4 mr-2" />
+                  評価を削除
+                </Button>
+              )}
               <Button
                 type="button"
                 variant="outline"
