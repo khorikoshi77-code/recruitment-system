@@ -29,78 +29,27 @@ export function EvaluationProvider({ children }: { children: ReactNode }) {
   const fetchFields = async () => {
     try {
       setLoading(true)
-      // デモデータを返す
-      const demoFields: EvaluationField[] = [
-        {
-          id: '1',
-          name: '技術スキル',
-          description: 'プログラミング技術、フレームワークの理解度、技術的な問題解決能力',
-          weight: 25,
-          is_required: true,
-          is_active: true,
-          display_order: 1,
-          created_at: '2024-01-01T00:00:00Z',
-          updated_at: '2024-01-01T00:00:00Z'
-        },
-        {
-          id: '2',
-          name: 'コミュニケーション能力',
-          description: '説明力、質問への回答能力、チームワーク、プレゼンテーション能力',
-          weight: 20,
-          is_required: true,
-          is_active: true,
-          display_order: 2,
-          created_at: '2024-01-01T00:00:00Z',
-          updated_at: '2024-01-01T00:00:00Z'
-        },
-        {
-          id: '3',
-          name: '問題解決能力',
-          description: '論理的思考力、課題分析力、解決策の提案力、学習意欲',
-          weight: 20,
-          is_required: true,
-          is_active: true,
-          display_order: 3,
-          created_at: '2024-01-01T00:00:00Z',
-          updated_at: '2024-01-01T00:00:00Z'
-        },
-        {
-          id: '4',
-          name: '企業文化との適合性',
-          description: '価値観の一致、働き方への理解、会社への興味・関心',
-          weight: 15,
-          is_required: true,
-          is_active: true,
-          display_order: 4,
-          created_at: '2024-01-01T00:00:00Z',
-          updated_at: '2024-01-01T00:00:00Z'
-        },
-        {
-          id: '5',
-          name: 'リーダーシップ',
-          description: 'チームを引っ張る力、意思決定能力、責任感',
-          weight: 10,
-          is_required: false,
-          is_active: true,
-          display_order: 5,
-          created_at: '2024-01-01T00:00:00Z',
-          updated_at: '2024-01-01T00:00:00Z'
-        },
-        {
-          id: '6',
-          name: '創造性',
-          description: '新しいアイデアの提案力、イノベーション思考',
-          weight: 10,
-          is_required: false,
-          is_active: true,
-          display_order: 6,
-          created_at: '2024-01-01T00:00:00Z',
-          updated_at: '2024-01-01T00:00:00Z'
-        }
-      ]
-      setFields(demoFields)
+      // Supabaseから実際のデータを取得
+      const { createBrowserClient } = await import('@supabase/ssr')
+      const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
+      const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+      const supabase = createBrowserClient(supabaseUrl, supabaseAnonKey)
+
+      const { data, error } = await supabase
+        .from('evaluation_fields')
+        .select('*')
+        .order('display_order', { ascending: true })
+
+      if (error) {
+        console.error('評価項目の取得エラー:', error)
+        throw error
+      }
+
+      setFields(data || [])
     } catch (error) {
       console.error('評価項目の取得エラー:', error)
+      // エラー時は空配列を設定
+      setFields([])
     } finally {
       setLoading(false)
     }

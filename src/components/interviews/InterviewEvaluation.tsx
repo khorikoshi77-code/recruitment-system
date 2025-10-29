@@ -152,8 +152,10 @@ export function InterviewEvaluation({ applicantId }: { applicantId: string }) {
     setSuccess('')
 
     try {
+      console.log('評価保存開始:', { applicantId, evaluationFields: evaluationFields.length })
       const overallRating = calculateOverallRating()
-      
+      console.log('総合評価計算完了:', overallRating)
+
       // 評価データを保存（evaluationsテーブルに保存）
       // ✅ 採否未選択時は「要検討」を自動設定
       const { data: evaluationResult, error: evalError } = await supabase
@@ -171,21 +173,35 @@ export function InterviewEvaluation({ applicantId }: { applicantId: string }) {
 
       if (evalError) throw evalError
 
-      // 評価項目の詳細データを保存
+      // 評価項目の詳細データを一括保存
       const evaluationId = evaluationResult[0].id
+      console.log('評価ID取得完了:', evaluationId)
       const activeFields = evaluationFields.filter(field => field.is_active)
-      
-      for (const field of activeFields) {
-        const rating = evaluation[field.id]
-        if (rating !== undefined && rating > 0) {
-          await supabase
-            .from('evaluation_field_values')
-            .upsert({
-              evaluation_id: evaluationId,
-              field_id: field.id,
-              rating: rating
-            })
+      console.log('有効な評価項目数:', activeFields.length)
+
+      const fieldValues = activeFields
+        .filter(field => {
+          const rating = evaluation[field.id]
+          return rating !== undefined && rating > 0
+        })
+        .map(field => ({
+          evaluation_id: evaluationId,
+          field_id: field.id,
+          rating: evaluation[field.id]
+        }))
+
+      if (fieldValues.length > 0) {
+        console.log('評価項目データ保存:', fieldValues)
+        const { error: fieldError } = await supabase
+          .from('evaluation_field_values')
+          .upsert(fieldValues)
+          .select()
+
+        if (fieldError) {
+          console.error('評価項目保存エラー:', fieldError)
+          throw fieldError
         }
+        console.log('評価項目データ保存完了')
       }
 
       // 応募者のステータスを更新
@@ -200,6 +216,7 @@ export function InterviewEvaluation({ applicantId }: { applicantId: string }) {
 
       if (updateError) throw updateError
 
+      console.log('応募者ステータス更新完了')
       setSuccess('評価が保存されました')
       
       // 3秒後に面接日程ページに遷移
@@ -208,8 +225,12 @@ export function InterviewEvaluation({ applicantId }: { applicantId: string }) {
       }, 2000)
 
     } catch (error: any) {
-      setError(error.message || '評価の保存に失敗しました')
+      console.error('評価保存エラー詳細:', error)
+      const errorMessage = error.message || '評価の保存に失敗しました'
+      console.error('エラーメッセージ:', errorMessage)
+      setError(errorMessage)
     } finally {
+      console.log('保存処理終了 - ローディング状態解除')
       setSaving(false)
     }
   }
