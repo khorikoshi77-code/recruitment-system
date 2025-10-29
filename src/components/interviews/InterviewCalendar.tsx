@@ -104,12 +104,14 @@ export function InterviewCalendar() {
   }
 
   const upcomingInterviews = applicants.filter(applicant => {
-    const interviewDate = parseISO(applicant.interview_date!)
+    if (!applicant.interview_date) return false
+    const interviewDate = parseISO(applicant.interview_date)
     return interviewDate >= new Date()
   })
 
   const pastInterviews = applicants.filter(applicant => {
-    const interviewDate = parseISO(applicant.interview_date!)
+    if (!applicant.interview_date) return false
+    const interviewDate = parseISO(applicant.interview_date)
     return interviewDate < new Date()
   })
 

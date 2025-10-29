@@ -243,13 +243,13 @@ export function UserEdit({ userId }: UserEditProps) {
             <div>
               <Label className="text-sm font-medium text-gray-600">登録日</Label>
               <p className="text-sm">
-                {format(new Date(user.created_at), 'yyyy年MM月dd日 HH:mm', { locale: ja })}
+                {user.created_at ? format(new Date(user.created_at), 'yyyy年MM月dd日 HH:mm', { locale: ja }) : '日付なし'}
               </p>
             </div>
             <div>
               <Label className="text-sm font-medium text-gray-600">最終更新</Label>
               <p className="text-sm">
-                {format(new Date(user.updated_at), 'yyyy年MM月dd日 HH:mm', { locale: ja })}
+                {user.updated_at ? format(new Date(user.updated_at), 'yyyy年MM月dd日 HH:mm', { locale: ja }) : '日付なし'}
               </p>
             </div>
           </CardContent>

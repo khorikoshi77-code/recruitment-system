@@ -214,10 +214,10 @@ export function PastApplicantList() {
                       </Badge>
                     </TableCell>
                     <TableCell>
-                      {format(new Date(applicant.applied_at), 'yyyy/MM/dd', { locale: ja })}
+                      {applicant.applied_at ? format(new Date(applicant.applied_at), 'yyyy/MM/dd', { locale: ja }) : '-'}
                     </TableCell>
                     <TableCell>
-                      {format(new Date(applicant.updated_at), 'yyyy/MM/dd', { locale: ja })}
+                      {applicant.updated_at ? format(new Date(applicant.updated_at), 'yyyy/MM/dd', { locale: ja }) : '-'}
                     </TableCell>
                     <TableCell>
                       <Button variant="outline" size="sm" asChild>

@@ -47,8 +47,10 @@ export function Reports() {
 
   // 月別応募数
   const monthlyStats = applicants.reduce((acc, applicant) => {
-    const month = new Date(applicant.created_at).toISOString().slice(0, 7) // YYYY-MM
-    acc[month] = (acc[month] || 0) + 1
+    if (applicant.created_at) {
+      const month = new Date(applicant.created_at).toISOString().slice(0, 7) // YYYY-MM
+      acc[month] = (acc[month] || 0) + 1
+    }
     return acc
   }, {} as Record<string, number>)
 
@@ -96,7 +98,7 @@ export function Reports() {
       applicant.email,
       applicant.position,
       applicant.status,
-      new Date(applicant.created_at).toLocaleDateString('ja-JP'),
+      applicant.created_at ? new Date(applicant.created_at).toLocaleDateString('ja-JP') : '',
       applicant.interview_date ? new Date(applicant.interview_date).toLocaleDateString('ja-JP') : '',
       applicant.evaluation || '',
       applicant.comment || '',

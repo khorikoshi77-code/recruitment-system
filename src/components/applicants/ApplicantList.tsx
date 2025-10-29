@@ -277,7 +277,7 @@ export function ApplicantList() {
                               {applicant.status}
                             </Badge>
                           ) : column.key === 'created_at' ? (
-                            format(new Date(applicant.created_at), 'yyyy/MM/dd', { locale: ja })
+                            applicant.created_at ? format(new Date(applicant.created_at), 'yyyy/MM/dd', { locale: ja }) : '-'
                           ) : column.key === 'interview_date' ? (
                             applicant.interview_date 
                               ? format(new Date(applicant.interview_date), 'yyyy/MM/dd', { locale: ja })

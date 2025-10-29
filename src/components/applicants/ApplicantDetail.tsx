@@ -186,7 +186,7 @@ export function ApplicantDetail({ applicantId }: ApplicantDetailProps) {
             <div>
               <Label className="text-sm font-medium text-gray-600">応募日</Label>
               <p className="text-sm">
-                {format(new Date(applicant.created_at), 'yyyy年MM月dd日', { locale: ja })}
+                {applicant.created_at ? format(new Date(applicant.created_at), 'yyyy年MM月dd日', { locale: ja }) : '日付なし'}
               </p>
             </div>
           </CardContent>

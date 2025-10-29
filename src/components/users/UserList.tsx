@@ -167,7 +167,7 @@ export function UserList() {
                       </Badge>
                     </TableCell>
                     <TableCell>
-                      {format(new Date(user.created_at), 'yyyy/MM/dd', { locale: ja })}
+                      {user.created_at ? format(new Date(user.created_at), 'yyyy/MM/dd', { locale: ja }) : '-'}
                     </TableCell>
                     <TableCell>
                       <div className="flex items-center space-x-2">

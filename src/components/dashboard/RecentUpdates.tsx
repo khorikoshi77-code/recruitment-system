@@ -45,7 +45,7 @@ export function RecentUpdates({ applicants }: RecentUpdatesProps) {
                   </div>
                   <p className="text-sm text-gray-600 mt-1">{applicant.position}</p>
                   <p className="text-xs text-gray-500 mt-1">
-                    {format(new Date(applicant.updated_at), 'yyyy年MM月dd日 HH:mm', { locale: ja })}
+                    {applicant.updated_at ? format(new Date(applicant.updated_at), 'yyyy年MM月dd日 HH:mm', { locale: ja }) : '日付なし'}
                   </p>
                 </div>
               </div>

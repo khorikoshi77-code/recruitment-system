@@ -181,6 +181,7 @@ export function SystemSettings({ onNavigate }: SystemSettingsProps) {
         ))}
       </div>
 
+      <DatabaseInitializer />
     </div>
   )
 }
