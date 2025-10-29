@@ -121,10 +121,26 @@ export function UserRegister() {
     setError('')
     setSuccess('')
 
+    console.log('🚀 ユーザー登録フォーム送信開始')
+
     try {
       // バリデーション
+      console.log('✅ バリデーション開始')
       if (!formData.email || !formData.password || !formData.role) {
         throw new Error('すべての項目を入力してください')
+      }
+
+      // メールアドレスの形式チェック
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+      if (!emailRegex.test(formData.email)) {
+        throw new Error('有効なメールアドレスを入力してください')
+      }
+
+      // テスト用メールアドレスの拒否
+      const invalidDomains = ['example.com', 'test.com', 'dummy.com', 'sample.com']
+      const emailDomain = formData.email.split('@')[1]?.toLowerCase()
+      if (invalidDomains.includes(emailDomain)) {
+        throw new Error('実際に使用可能なメールアドレスを入力してください（test@example.comなどのテスト用アドレスは使用できません）')
       }
 
       if (formData.password !== formData.confirmPassword) {
@@ -135,8 +151,12 @@ export function UserRegister() {
         throw new Error('パスワードは6文字以上で入力してください')
       }
 
+      console.log('✅ バリデーション通過')
+
       // ユーザー作成
+      console.log('📝 createUser関数を呼び出し中...')
       await createUser(formData.email, formData.password, formData.role as '採用担当' | '面接官')
+      console.log('✅ createUser関数完了')
 
       setSuccess('ユーザーの登録が完了しました')
       
@@ -146,8 +166,10 @@ export function UserRegister() {
       }, 2000)
 
     } catch (error: any) {
+      console.error('❌ ユーザー登録エラー:', error)
       setError(error.message || 'ユーザーの登録に失敗しました')
     } finally {
+      console.log('🏁 登録処理終了（ローディング解除）')
       setLoading(false)
     }
   }

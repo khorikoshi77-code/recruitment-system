@@ -30,26 +30,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           .from('users')
           .select('role')
           .eq('id', session.user.id)
-          .single()
-        
+          .maybeSingle() // single()の代わりにmaybeSingle()を使用
+
+        if (error) {
+          console.error('ロール取得エラー:', error)
+        }
+
         if (data) {
           setRole(data.role)
         } else {
-          // ユーザーが存在しない場合は作成
-          const { error: insertError } = await supabase
-            .from('users')
-            .insert({
-              id: session.user.id,
-              email: session.user.email,
-              password_hash: 'dummy_hash',
-              role: '管理者'
-            })
-          
-          if (!insertError) {
-            setRole('管理者')
-          } else {
-            setRole('管理者') // デフォルトで管理者
-          }
+          console.error('usersテーブルにレコードが見つかりません:', session.user.id)
+          setRole(null)
         }
       }
       setLoading(false)
@@ -67,12 +58,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             .from('users')
             .select('role')
             .eq('id', session.user.id)
-            .single()
-          
+            .maybeSingle() // single()の代わりにmaybeSingle()を使用
+
+          if (error) {
+            console.error('ロール取得エラー (onAuthStateChange):', error)
+          }
+
           if (data) {
             setRole(data.role)
           } else {
-            setRole('管理者') // デフォルトで管理者
+            console.error('usersテーブルにレコードが見つかりません (onAuthStateChange):', session.user.id)
+            setRole(null)
           }
         } else {
           setUser(null)
