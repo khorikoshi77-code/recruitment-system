@@ -54,9 +54,19 @@ export async function createUser(email: string, password: string, role: '採用�
   const { data: authData, error: authError } = await supabase.auth.signUp({
     email,
     password,
+    options: {
+      emailRedirectTo: undefined,
+      data: {
+        role: role
+      }
+    }
   })
   
-  if (authError) throw authError
+  if (authError) {
+    console.error('サインアップエラー:', authError)
+    throw new Error(authError.message || 'ユーザー作成に失敗しました')
+  }
+  
   if (!authData.user) throw new Error('ユーザー作成に失敗しました')
   
   // ユーザー情報をusersテーブルに追加
@@ -68,7 +78,10 @@ export async function createUser(email: string, password: string, role: '採用�
       role,
     })
   
-  if (userError) throw userError
+  if (userError) {
+    console.error('usersテーブル挿入エラー:', userError)
+    throw userError
+  }
   
   return authData.user
 }
