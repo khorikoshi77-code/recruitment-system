@@ -207,12 +207,13 @@ export function InterviewEvaluation({ applicantId }: { applicantId: string }) {
       // 応募者のステータスを更新
       const { error: updateError } = await supabase
         .from('applicants')
-        .update({ 
+        .update({
           evaluation: evaluation.comments,
-          status: evaluation.recommendation === '採用' ? '内定' : 
+          status: evaluation.recommendation === '採用' ? '内定' :
                   evaluation.recommendation === '不採用' ? '不採用' : '面接中'
         })
         .eq('id', applicantId)
+        .select()
 
       if (updateError) throw updateError
 

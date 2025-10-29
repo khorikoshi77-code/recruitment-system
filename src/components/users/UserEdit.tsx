@@ -157,6 +157,7 @@ export function UserEdit({ userId }: UserEditProps) {
           updated_at: new Date().toISOString(),
         })
         .eq('id', userId)
+        .select()
 
       if (error) throw error
 

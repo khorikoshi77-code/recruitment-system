@@ -94,6 +94,7 @@ export function ApplicantDetail({ applicantId }: ApplicantDetailProps) {
         .from('applicants')
         .update(updateData)
         .eq('id', applicantId)
+        .select()
 
       if (error) throw error
 

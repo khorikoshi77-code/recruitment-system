@@ -145,6 +145,7 @@ export function ApplicantRegister() {
       const { error } = await supabase
         .from('applicants')
         .insert(applicantData)
+        .select()
 
       if (error) {
         if (error.code === 'PGRST116') {

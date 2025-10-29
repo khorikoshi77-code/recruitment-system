@@ -230,6 +230,7 @@ export function RoleManagement({ onBack }: RoleManagementProps) {
             "面接": ["作成", "閲覧", "更新", "削除"]
           }
         })
+        .select()
 
       if (error) {
         console.error('管理者ロール作成エラー:', error)
@@ -257,6 +258,7 @@ export function RoleManagement({ onBack }: RoleManagementProps) {
           .from('roles')
           .update(roleData)
           .eq('id', editingRole.id)
+          .select()
 
         if (error) throw error
         setSuccess('ロールを更新しました')
@@ -265,6 +267,7 @@ export function RoleManagement({ onBack }: RoleManagementProps) {
         const { error } = await supabase
           .from('roles')
           .insert([roleData])
+          .select()
 
         if (error) throw error
         setSuccess('ロールを作成しました')
@@ -311,6 +314,7 @@ export function RoleManagement({ onBack }: RoleManagementProps) {
         .from('roles')
         .delete()
         .eq('id', roleId)
+        .select()
 
       if (error) throw error
       setSuccess('ロールを削除しました')

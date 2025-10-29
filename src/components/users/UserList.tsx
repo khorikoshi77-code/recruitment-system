@@ -82,6 +82,7 @@ export function UserList() {
         .from('users')
         .delete()
         .eq('id', userId)
+        .select()
 
       if (dbError) throw dbError
 

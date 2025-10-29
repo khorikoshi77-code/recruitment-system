@@ -203,6 +203,7 @@ export function DashboardCardManager({ onBack }: DashboardCardManagerProps) {
           .from('dashboard_cards')
           .update(cardData)
           .eq('id', editingCard.id)
+          .select()
 
         if (error) throw error
         setSuccess('カードを更新しました')
@@ -211,6 +212,7 @@ export function DashboardCardManager({ onBack }: DashboardCardManagerProps) {
         const { error } = await supabase
           .from('dashboard_cards')
           .insert([cardData])
+          .select()
 
         if (error) throw error
         setSuccess('カードを作成しました')
@@ -258,6 +260,7 @@ export function DashboardCardManager({ onBack }: DashboardCardManagerProps) {
         .from('dashboard_cards')
         .delete()
         .eq('id', cardId)
+        .select()
 
       if (error) throw error
       setSuccess('カードを削除しました')

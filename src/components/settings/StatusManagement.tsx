@@ -120,6 +120,7 @@ export function StatusManagement({ onBack }: StatusManagementProps) {
           .from('status_settings')
           .update(statusData)
           .eq('id', editingStatus.id)
+          .select()
 
         if (error) throw error
         setSuccess('ステータスの更新が完了しました')
@@ -128,6 +129,7 @@ export function StatusManagement({ onBack }: StatusManagementProps) {
         const { error } = await supabase
           .from('status_settings')
           .insert(statusData)
+          .select()
 
         if (error) throw error
         setSuccess('ステータスの追加が完了しました')
@@ -159,6 +161,7 @@ export function StatusManagement({ onBack }: StatusManagementProps) {
         .from('status_settings')
         .delete()
         .eq('id', statusId)
+        .select()
 
       if (error) throw error
       setSuccess('ステータスの削除が完了しました')

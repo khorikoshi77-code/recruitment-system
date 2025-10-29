@@ -113,6 +113,7 @@ export function FieldManagement({ onBack }: FieldManagementProps) {
           .from('applicant_fields')
           .update(fieldData)
           .eq('id', editingField.id)
+          .select()
 
         if (error) throw error
         setSuccess('項目の更新が完了しました')
@@ -121,6 +122,7 @@ export function FieldManagement({ onBack }: FieldManagementProps) {
         const { error } = await supabase
           .from('applicant_fields')
           .insert(fieldData)
+          .select()
 
         if (error) throw error
         setSuccess('項目の追加が完了しました')
@@ -155,6 +157,7 @@ export function FieldManagement({ onBack }: FieldManagementProps) {
         .from('applicant_fields')
         .delete()
         .eq('id', fieldId)
+        .select()
 
       if (error) throw error
       setSuccess('項目の削除が完了しました')
